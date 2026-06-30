@@ -138,7 +138,7 @@ if submit_button:
     }
     
     try:
-        res = requests.post("http://127.0.0.1:8000/predict", json=payload)
+        res = requests.post("https://student-attrition-api.onrender.com", json=payload)
         if res.status_code == 200:
             result = res.json()
             st.success(f"Result: {result['prediction']}")
