@@ -144,6 +144,24 @@ if submit_button:
             st.success(f"Result: {result['prediction']}")
             st.metric("Confidence", f"{result['confidence_percent']}%")
             
+            display_payload = payload.copy()
+            
+            # Reverse mappings for binary/categorical fields
+            rev_yes_no = {1: "Yes", 0: "No"}
+            rev_gender = {0: "Female", 1: "Male"}
+            rev_attendance = {1: "Daytime", 0: "Evening"}
+            
+            # Convert the appropriate fields
+            display_payload["Displaced"] = rev_yes_no[display_payload["Displaced"]]
+            display_payload["Debtor"] = rev_yes_no[display_payload["Debtor"]]
+            display_payload["Tuition fees up to date"] = rev_yes_no[display_payload["Tuition fees up to date"]]
+            display_payload["Scholarship holder"] = rev_yes_no[display_payload["Scholarship holder"]]
+            display_payload["Gender"] = rev_gender[display_payload["Gender"]]
+            display_payload["Daytime/evening attendance"] = rev_attendance[display_payload["Daytime/evening attendance"]]
+            
+            # Also convert derived binary features if desired
+            display_payload["Non_Traditional_Student"] = rev_yes_no[display_payload["Non_Traditional_Student"]]
+            display_payload["Father_Higher_Ed"] = rev_yes_no[display_payload["Father_Higher_Ed"]]
             display_df = pd.DataFrame([payload]).T.rename(columns={0: "Value"})
             display_df.index = [idx.replace('_', ' ') for idx in display_df.index]
             st.dataframe(display_df, use_container_width=True)
