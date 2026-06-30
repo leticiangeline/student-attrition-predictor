@@ -68,6 +68,9 @@ with st.form("student_data_form"):
     c1, c2, c3 = st.columns(3)
     
     with c1:
+        st.subheader("Personal & Academic")[cite: 1]
+        student_id = st.text_input("Student ID", placeholder="e.g., STU-12345")
+        m_status = st.selectbox("Marital Status", list(marital_map.keys()))[cite: 1]
         st.subheader("Personal & Academic")
         m_status = st.selectbox("Marital Status", list(marital_map.keys()))
         app_mode = st.selectbox("Application Mode", list(app_mode_map.keys()))
@@ -108,6 +111,7 @@ if submit_button:
     father_higher = 1 if fathers_qualification_map[father_qual] >= 3 else 0 # Example assumption
 
     payload = {
+        "Student_ID": student_id,
         "Marital status": marital_map[m_status], 
         "Application mode": app_mode_map[app_mode], 
         "Course": course_map[course],
