@@ -150,6 +150,12 @@ if submit_button:
             rev_yes_no = {1: "Yes", 0: "No"}
             rev_gender = {0: "Female", 1: "Male"}
             rev_attendance = {1: "Daytime", 0: "Evening"}
+            rev_marital = {v: k for k, v in marital_map.items()}
+            rev_app_mode = {v: k for k, v in app_mode_map.items()}
+            rev_course = {v: k for k, v in course_map.items()}
+            rev_prev_qual = {v: k for k, v in prev_qual_map.items()}
+            rev_father_qual = {v: k for k, v in fathers_qualification_map.items()}
+            rev_father_occ = {v: k for k, v in fathers_occupation_map.items()}
             
             # Convert the appropriate fields
             display_payload["Displaced"] = rev_yes_no[display_payload["Displaced"]]
@@ -158,10 +164,17 @@ if submit_button:
             display_payload["Scholarship holder"] = rev_yes_no[display_payload["Scholarship holder"]]
             display_payload["Gender"] = rev_gender[display_payload["Gender"]]
             display_payload["Daytime/evening attendance"] = rev_attendance[display_payload["Daytime/evening attendance"]]
-
-            # Also convert derived binary features if desired
             display_payload["Non_Traditional_Student"] = rev_yes_no[display_payload["Non_Traditional_Student"]]
             display_payload["Father_Higher_Ed"] = rev_yes_no[display_payload["Father_Higher_Ed"]]
+            
+            # Convert categorical fields
+            display_payload["Marital status"] = rev_marital[display_payload["Marital status"]]
+            display_payload["Application mode"] = rev_app_mode[display_payload["Application mode"]]
+            display_payload["Course"] = rev_course[display_payload["Course"]]
+            display_payload["Previous qualification"] = rev_prev_qual[display_payload["Previous qualification"]]
+            display_payload["Father's qualification"] = rev_father_qual[display_payload["Father's qualification"]]
+            display_payload["Father's occupation"] = rev_father_occ[display_payload["Father's occupation"]]
+
             display_df = pd.DataFrame([display_payload]).T.rename(columns={0: "Value"})
             display_df.index = [idx.replace('_', ' ') for idx in display_df.index]
             st.dataframe(display_df, use_container_width=True)
