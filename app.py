@@ -71,8 +71,6 @@ with st.form("student_data_form"):
         st.subheader("Personal & Academic")
         student_id = st.text_input("Student ID", placeholder="e.g., STU-12345")
         m_status = st.selectbox("Marital Status", list(marital_map.keys()))
-        st.subheader("Personal & Academic")
-        m_status = st.selectbox("Marital Status", list(marital_map.keys()))
         app_mode = st.selectbox("Application Mode", list(app_mode_map.keys()))
         course = st.selectbox("Course", list(course_map.keys()))
         attendance = st.selectbox("Attendance (Mode of Study)", list(attendance_map.keys()))
