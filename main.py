@@ -8,10 +8,10 @@ app = FastAPI()
 
 model = joblib.load("student_retention_model.joblib") 
 
-class StudentInput(BaseModel):[cite: 2]
+class StudentInput(BaseModel):
     student_id: str = Field(alias="Student_ID", default="Unknown")
-    marital_status: int = Field(alias="Marital status")[cite: 2]
-    application_mode: int = Field(alias="Application mode")[cite: 2]
+    marital_status: int = Field(alias="Marital status")
+    application_mode: int = Field(alias="Application mode")
     course: int = Field(alias="Course")
     attendance: int = Field(alias="Daytime/evening attendance")
     prev_qual: int = Field(alias="Previous qualification")

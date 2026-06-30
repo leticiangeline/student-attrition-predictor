@@ -112,8 +112,8 @@ if submit_button:
 
     payload = {
         "Student_ID": student_id,
-        "Marital status": marital_map[m_status], 
-        "Application mode": app_mode_map[app_mode], 
+        "Marital status": marital_map[m_status],
+        "Application mode": app_mode_map[app_mode],
         "Course": course_map[course],
         "Daytime/evening attendance": attendance_map[attendance], 
         "Previous qualification": prev_qual_map[prev_qual],
