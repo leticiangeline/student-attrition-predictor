@@ -51,6 +51,7 @@ def predict(data: StudentInput):
                                         # (Enrolled, Dropout, Graduate)
     
     return {
+        "student_id": data.student_id,
         "prediction": str(pred),
         "confidence_percent": round(float(np.max(probas)) * 100, 2),
         "agent_context": {
