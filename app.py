@@ -143,8 +143,45 @@ if submit_button:
         res = requests.post("https://student-attrition-api.onrender.com/predict", json=payload)
         if res.status_code == 200:
             result = res.json()
+            prediction_val = result['prediction']
             st.success(f"Result: {result['prediction']}")
             st.metric("Confidence", f"{result['confidence_percent']}%")
+
+            # Trigger response from Gemini on n8n's side
+            gemini_suggestion = "AI advice could not be generated."
+
+            with st.spinner("Gemini is generating counselor recommendations..."):
+                try:
+                    n8n_webhook_url = "https://leticiangeline.app.n8n.cloud/webhook-test/28c6cd06-f048-4408-8a7b-330891ef36b2"
+                    
+                    # Package original payload + the API prediction results for Gemini
+                    n8n_payload = {
+                        "payload": payload,
+                        "prediction": prediction_val,
+                        "confidence_percent": result['confidence_percent'],
+                        "agent_context": result['agent_context']
+                    }
+                    
+                    n8n_res = requests.post(n8n_webhook_url, json=n8n_payload)
+                    if n8n_res.status_code == 200:
+                        n8n_data = n8n_res.json()
+                        if isinstance(n8n_data, list) and len(n8n_data) > 0:
+                            gemini_suggestion = n8n_data[0].get("output", "No dynamic suggestion provided.")
+                        elif isinstance(n8n_data, dict):
+                            gemini_suggestion = n8n_data.get("output", "No dynamic suggestion provided.")
+                except Exception as ai_err:
+                    st.warning(f"Could not load AI recommendations: {ai_err}")
+            
+            st.markdown("---")
+            if prediction_val == "Graduate":
+                st.info(f"### 🎓 AI Counselor Suggestion\n{gemini_suggestion}")
+            elif prediction_val == "Enrolled":
+                st.warning(f"### 📝 AI Counselor Suggestion\n{gemini_suggestion}")
+            elif prediction_val == "Dropout":
+                st.error(f"### ⚠️ Urgent Intervention Required\n{gemini_suggestion}")
+            else:
+                st.write(gemini_suggestion)
+            st.markdown("---")
             
             display_payload = payload.copy()
             
